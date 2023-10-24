@@ -26,11 +26,6 @@ public class BenchmarkRunner {
     public static void init() throws Exception {
 
         for (int i=0;i<N;i++) {
-            List<Integer> numbers = new ArrayList<>();
-            numbers.add(1);
-            numbers.add(2);
-            numbers.add(3);
-            myObject.setNumberList(numbers);
             byte[] serializedData = ZigZagSerializator.serialize(myObject);
             ZigZagDeserializator.deserialize(myObject, serializedData);
         }
@@ -39,13 +34,17 @@ public class BenchmarkRunner {
     @Setup
     public void setup() {
         for (int i=0;i<N;i++) {
+            List<Integer> numbers = new ArrayList<>();
+            numbers.add(1);
+            numbers.add(2);
+            numbers.add(3);
+            myObject.setNumberList(numbers);
             myObject.setIntField(256);
             myObject.setStringField("abcdef");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        //org.openjdk.jmh.Main.main(args);
         Options opt = new OptionsBuilder()
                 .include(BenchmarkRunner.class.getSimpleName())
                 .forks(1)
