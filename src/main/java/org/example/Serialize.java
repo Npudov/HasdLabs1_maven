@@ -21,8 +21,9 @@ public class Serialize
         numbers.add(3);
        myObject.setNumberList(numbers);
 
-        FileOutputStream serialData = ZigZagSerializator.serializeToFile(myObject, "serializedData.bin");
         File file = new File("serializedData.bin");
+        ZigZagSerializator.serializeToFile(myObject, file.getPath());
+
         String sizeFile = String.valueOf(file.length());
         try (PrintWriter printWriter = new PrintWriter("result.txt")){
             printWriter.write(sizeFile);

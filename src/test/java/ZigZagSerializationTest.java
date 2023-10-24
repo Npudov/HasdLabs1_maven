@@ -3,8 +3,6 @@ import org.example.ZigZagDeserializator;
 import org.example.ZigZagSerializator;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +21,7 @@ public class ZigZagSerializationTest {
         numbers.add(3);
         originalData.setNumberList(numbers);
 
-        FileOutputStream serialData = ZigZagSerializator.serializeToFile(originalData, "serializedData.bin");
-        File file = new File("serializedData.bin");
+        ZigZagSerializator.serializeToFile(originalData, "serializedData.bin");
 
         ExampleData deserializedData = new ExampleData();
         ZigZagDeserializator.deserializeFromFile(deserializedData, "serializedData.bin");
@@ -40,10 +37,10 @@ public class ZigZagSerializationTest {
         originalData.setIntField(42);
         originalData.setStringField("Hello, World!");
 
-        List<Integer> numbers = new ArrayList<>(); // Пустой список
+        List<Integer> numbers = new ArrayList<>();
         originalData.setNumberList(numbers);
 
-        FileOutputStream serialData = ZigZagSerializator.serializeToFile(originalData, "serializedData.bin");
+        ZigZagSerializator.serializeToFile(originalData, "serializedData.bin");
 
         ExampleData deserializedData = new ExampleData();
         ZigZagDeserializator.deserializeFromFile(deserializedData, "serializedData.bin");
