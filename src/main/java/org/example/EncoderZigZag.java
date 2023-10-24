@@ -1,11 +1,11 @@
 package org.example;
 
 public class EncoderZigZag {
-    protected static int encodeZigZag(int n) {
+    public static int encodeZigZag(int n) {
         return (n << 1) ^ (n >> 31);
     }
 
-    protected static int decodeZigZag(int n) {
+    public static int decodeZigZag(int n) {
         return (n >>> 1) ^ -(n & 1);
     }
 

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Serialize
@@ -12,6 +14,12 @@ public class Serialize
         ExampleData myObject = new ExampleData();
         myObject.setIntField(42);
         myObject.setStringField("Hello, World!");
+
+        List<Integer> numbers = new ArrayList<>();
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+       myObject.setNumberList(numbers);
 
         FileOutputStream serialData = ZigZagSerializator.serializeToFile(myObject, "serializedData.bin");
         File file = new File("serializedData.bin");

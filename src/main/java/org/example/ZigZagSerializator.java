@@ -3,6 +3,7 @@ package org.example;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,9 @@ import java.util.List;
 public class ZigZagSerializator {
     public static FileOutputStream serializeToFile(Object obj, String filePath) throws Exception {
         byte[] serializedData = serialize(obj);
-        //System.out.println("Data length: " + serializedData.length);
         FileOutputStream fos = new FileOutputStream(filePath);
         fos.write(serializedData);
         fos.close();
-        /*try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(serializedData);
-        }*/
         return fos;
     }
     public static byte[] serialize(Object obj) throws Exception {
@@ -43,6 +40,24 @@ public class ZigZagSerializator {
                 }
                 for (byte b : strBytes) {
                     serializedData.add(b);
+                }
+            } else if (field.getType() == List.class) {
+                ParameterizedType listType = (ParameterizedType) field.getGenericType();
+                if (listType.getActualTypeArguments()[0] != Integer.class) {
+                    throw new Exception("List contains non-Integer element");
+                }
+                List<Integer> value = (List<Integer>) field.get(obj);
+                int listSize = value.size();
+                byte[] listSizeBytes = EncoderZigZag.intToBytes(listSize);
+                for (byte b: listSizeBytes) {
+                    serializedData.add(b);
+                }
+                for (int number: value) {
+                    int encodedValue = EncoderZigZag.encodeZigZag(number);
+                    byte[] bytes = EncoderZigZag.intToBytes(encodedValue);
+                    for (byte b: bytes) {
+                        serializedData.add(b);
+                    }
                 }
             } else {
                 throw new Exception("Illegal Type");
